@@ -4,13 +4,6 @@ const fs = require("fs");
 app.use(express.json());
 const cors = require("cors");
 app.use(cors());
-
-function keepAlive() {
-  setInterval(() => {
-    fetch("https://7f260c32-7e49-4bb2-b740-ca0101d967a8-00-3d5sdyvuho42c.riker.repl.co/");
-  }, 100);
-}
-
 const ids = {
   Darren: 0,
   Dominic: 1,
@@ -30,12 +23,27 @@ const lvls = {
   s2: 200,
   s3: 300,
 };
-console.log(lvls);
+const { MongoClient } = require('mongodb');
+const uri = `mongodb+srv://trvlert:RrhE5a553UMc0LIC@turncraft.4bigr.mongodb.net/vdlg`;
+async function getDocs(collectionName) {
+  try {
+    const client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const db = client.db('vdlg');
+    const collection = db.collection(collectionName);
+
+    // Find the first document (empty query matches all documents, limit 1 fetches only the first)
+    const document = await collection.find({}).limit(10).toArray();
+
+    return document;
+  } catch (error) {
+    console.error(error);
+  }
+}
 const points = JSON.parse(fs.readFileSync("db.json", "utf-8"));
 function sort_function(a, b) {
   return b.points - a.points;
 }
-points["data"].sort(sort_function);
+points["data"].sort((a, b) => b.points - a.points);
 get_id(points["data"]);
 console.log(points["data"]);
 function capitalizeFirstLetter(string) {
@@ -100,10 +108,9 @@ app.post("/set-points", (req, res) => {
 });
 
 app.get("/points", (req, res) => {
-  res.json(points["data"]);
+  res.json(getDocs("users"));
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  keepAlive();
   console.log(`Server running on port ${PORT}`);
 });
