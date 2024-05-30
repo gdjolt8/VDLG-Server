@@ -5,12 +5,14 @@ app.use(express.json());
 const cors = require("cors");
 app.use(cors());
 const ids = {
-  Darren: 0,
-  Dominic: 1,
-  Zion: 2,
-  Fabrice: 7,
-  Solomon: 5,
-  Connor: 6,
+  Darren: 1,
+  Dominic: 0,
+  Zion: 7,
+  Fabrice: 4,
+  Solomon: 2,
+  Connor: 6,  
+  London: 3,
+  Ifeanyichukwu: 5
 };
 
 function get_id(list) {
@@ -57,8 +59,9 @@ class PointSystem {
     };
   }
 
-  addPoints(pointsToAdd, to) {
-    points["data"][to].points += pointsToAdd;
+  static async addPoints(pointsToAdd, to) {
+    await collection.updateOne({"name": to}, {$inc: {points: pointsToAdd}});
+    getDocs();
     if (
       points["data"][to].points >
       this.lvls["s" + String(points["data"][to].lvl)]
@@ -67,9 +70,8 @@ class PointSystem {
         points["data"][to].points /
           this.lvls["s" + String(points["data"][to].lvl)],
       );
-      points["data"][to].points -=
-        this.lvls["s" + String(points["data"][to].lvl)];
-      points["data"][to].lvl += level;
+       await collection.updateOne({"name": to}, {$set: {points: points["data"][to].points - this.lvls["s" + String(points["data"][to].lvl)]}});
+      await collection.updateOne({"name": to}, {$inc: {level: level}});
     }
     console.log(points["data"][to]);
   }
