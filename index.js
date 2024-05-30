@@ -25,27 +25,24 @@ const lvls = {
 };
 const { MongoClient } = require('mongodb');
 const uri = `mongodb+srv://trvlert:RrhE5a553UMc0LIC@turncraft.4bigr.mongodb.net/vdlg`;
-async function getDocs(collectionName) {
+let points = {"data": {}};
+async function getDocs() {
   try {
     const client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     const db = client.db('vdlg');
-    const collection = db.collection(collectionName);
+    const collection = db.collection("users");
 
     // Find the first document (empty query matches all documents, limit 1 fetches only the first)
     const document = await collection.find({}).limit(10).toArray();
-
-    return document;
+    points.data = document;
+    await client.close();
   } catch (error) {
     console.error(error);
   }
 }
-const points = JSON.parse(fs.readFileSync("db.json", "utf-8"));
-function sort_function(a, b) {
-  return b.points - a.points;
-}
-points["data"].sort((a, b) => b.points - a.points);
-get_id(points["data"]);
-console.log(points["data"]);
+getDocs();
+
+points.sort((a, b) => b.points - a.points);
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -108,7 +105,7 @@ app.post("/set-points", (req, res) => {
 });
 
 app.get("/points", (req, res) => {
-  res.json(getDocs("users"));
+  res.json(points);
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
