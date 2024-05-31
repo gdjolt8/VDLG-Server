@@ -44,7 +44,7 @@ async function getDocs() {
   }
 }
 getDocs();
-points["data"].sort((a,b) => b.points - a.points);
+
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
@@ -107,6 +107,7 @@ app.post("/set-points", (req, res) => {
 });
 
 app.get("/points", (req, res) => {
+  points["data"].sort((a,b) => b.points - a.points);
   res.json(points["data"]);
 });
 const PORT = process.env.PORT || 3000;
