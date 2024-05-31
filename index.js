@@ -106,7 +106,7 @@ app.post("/set-points", (req, res) => {
 });
 
 app.get("/points", (req, res) => {
-  res.json(points);
+  res.json(points["data"]);
 });
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
