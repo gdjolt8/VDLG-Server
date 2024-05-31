@@ -28,7 +28,7 @@ const lvls = {
 const { MongoClient } = require('mongodb');
 const uri = `mongodb+srv://trvlert:RrhE5a553UMc0LIC@turncraft.4bigr.mongodb.net/vdlg`;
 let points = {"data": {}};
-points.sort((a,b) => b.points - a.points);
+
 async function getDocs() {
   try {
     const client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
@@ -44,6 +44,7 @@ async function getDocs() {
   }
 }
 getDocs();
+points["data"].sort((a,b) => b.points - a.points);
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
