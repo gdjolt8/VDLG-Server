@@ -100,7 +100,7 @@ app.get("/", (req, res) => {
 app.post("/set-points", (req, res) => {
   const { name, points: amount } = req.body;
   if (parseInt(amount) > 0)
-    ps.addPoints(amount, ids[capitalizeFirstLetter(name)]);
+    await ps.addPoints(amount, ids[capitalizeFirstLetter(name)]);
   else ps.deductPoints(amount, ids[capitalizeFirstLetter(name)]);
   res.status(200).json({ ok: true });
   fs.writeFileSync("db.json", JSON.stringify(points));
