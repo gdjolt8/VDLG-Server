@@ -97,7 +97,7 @@ app.get("/", (req, res) => {
   res.send(fs.readFileSync("index.html", "utf8"));
   res.status(200);
 });
-app.post("/set-points", (req, res) => {
+app.post("/set-points", async (req, res) => {
   const { name, points: amount } = req.body;
   if (parseInt(amount) > 0)
     await ps.addPoints(amount, ids[capitalizeFirstLetter(name)]);
