@@ -28,12 +28,12 @@ const lvls = {
 const { MongoClient } = require('mongodb');
 const uri = `mongodb+srv://trvlert:RrhE5a553UMc0LIC@turncraft.4bigr.mongodb.net/vdlg`;
 let points = {"data": {}};
-let client;
+let collection;
 async function getDocs() {
   try {
-    client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+    const client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
   const db = client.db('vdlg');
-  const collection = db.collection("users");
+   collection = db.collection("users");
     // Find the first document (empty query matches all documents, limit 1 fetches only the first)
     const document = await collection.find({}).limit(10).toArray();
     points.data = document;
