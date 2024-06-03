@@ -59,7 +59,7 @@ class PointSystem {
     };
   }
 
-  static async addPoints(pointsToAdd, to) {
+   async addPoints(pointsToAdd, to) {
     await collection.updateOne({"name": to}, {$inc: {points: pointsToAdd}});
     getDocs();
     if (
