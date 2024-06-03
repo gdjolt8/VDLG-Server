@@ -28,7 +28,7 @@ const lvls = {
 const { MongoClient } = require('mongodb');
 const uri = `mongodb+srv://trvlert:RrhE5a553UMc0LIC@turncraft.4bigr.mongodb.net/vdlg`;
 let points = {"data": {}};
-const client = MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+const client = await MongoClient.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = client.db('vdlg');
 const collection = db.collection("users");
 async function getDocs() {
