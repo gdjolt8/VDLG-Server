@@ -42,7 +42,7 @@ async function getDocs() {
     console.error(error);
   }
 }
-getDocs();
+
 
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -97,6 +97,7 @@ app.get("/", (req, res) => {
   res.status(200);
 });
 app.post("/set-points", async (req, res) => {
+  await getDocs();
   const { name, points: amount } = req.body;
   if (parseInt(amount) > 0)
     await ps.addPoints(amount, ids[capitalizeFirstLetter(name)]);
