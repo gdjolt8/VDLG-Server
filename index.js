@@ -37,7 +37,6 @@ async function getDocs() {
     // Find the first document (empty query matches all documents, limit 1 fetches only the first)
     const document = await collection.find({}).limit(10).toArray();
     points.data = document;
-    await client.close();
   } catch (error) {
     console.error(error);
   }
